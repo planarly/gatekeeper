@@ -16,16 +16,12 @@ function loadConfig() {
   var config = JSON.parse(fs.readFileSync(__dirname+ '/config.json', 'utf-8'));
   log('Configuration');
   for (var i in config) {
-    var configItem = process.env[i.toUpperCase()] || config[i];
+    var configItem = process.env[config[i]] || config[i];
     if (typeof configItem === "string") {
       configItem = configItem.trim();
     }
     config[i] = configItem;
-    if (i === 'oauth_client_id' || i === 'oauth_client_secret') {
-      log(i + ':', config[i], true);
-    } else {
-      log(i + ':', config[i]);
-    }
+    log(i + ':', configItem, i === 'oauth_client_id' || i === 'oauth_client_secret');
   }
   return config;
 }
@@ -34,8 +30,8 @@ var config = loadConfig();
 
 function authenticate(code, cb) {
   var data = qs.stringify({
-    client_id: config.oauth_client_id,
-    client_secret: config.oauth_client_secret,
+    client_id: process.env[config.oauth_client_id],
+    client_secret: process.env[config.oauth_client_secret],
     code: code
   });
 
