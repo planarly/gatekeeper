@@ -69,7 +69,7 @@ function log(label, value, sanitized) {
   value = value || '';
   if (sanitized){
     if (typeof(value) === 'string' && value.length > TRUNCATE_THRESHOLD){
-      console.log(label, value.substring(REVEALED_CHARS, 0) + REPLACEMENT);
+      console.log(label, REPLACEMENT + value.slice(-REVEALED_CHARS));
     } else {
       console.log(label, REPLACEMENT);
     }
